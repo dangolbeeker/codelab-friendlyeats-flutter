@@ -19,9 +19,13 @@ Future<void> addRestaurant(Restaurant restaurant) {
   });
 }
 
+//query that retrieves up to 50 restaurants from the top-level collection named restaurants, ordered by their average rating (currently all zero).
 Stream<QuerySnapshot> loadAllRestaurants() {
-  // TODO: Complete the "Display data from Cloud Firestore" step.
-  return Stream<QuerySnapshot>.value(null);
+  return FirebaseFirestore.instance
+      .collection('restaurants')
+      .orderBy('avgRating', descending: true)
+      .limit(50)
+      .snapshots();
 }
 
 List<Restaurant> getRestaurantsFromQuery(QuerySnapshot snapshot) {
