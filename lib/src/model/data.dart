@@ -37,8 +37,11 @@ List<Restaurant> getRestaurantsFromQuery(QuerySnapshot snapshot) {
 }
 
 Future<Restaurant> getRestaurant(String restaurantId) {
-  // TODO: Complete the "Get data" step.
-  return Future.value(null);
+  return FirebaseFirestore.instance
+      .collection('restaurants')
+      .doc(restaurantId)
+      .get()
+      .then((DocumentSnapshot doc) => Restaurant.fromSnapshot(doc));
 }
 
 Future<void> addReview({String restaurantId, Review review}) {
