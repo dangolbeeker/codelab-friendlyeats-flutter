@@ -28,9 +28,12 @@ Stream<QuerySnapshot> loadAllRestaurants() {
       .snapshots();
 }
 
+/*converts all the documents contained in the snapshot into Restaurant objects 
+that can be used elsewhere in your Flutter app.*/
 List<Restaurant> getRestaurantsFromQuery(QuerySnapshot snapshot) {
-  // TODO: Complete the "Display data from Cloud Firestore" step.
-  return [];
+  return snapshot.docs.map((DocumentSnapshot doc) {
+    return Restaurant.fromSnapshot(doc);
+  }).toList();
 }
 
 Future<Restaurant> getRestaurant(String restaurantId) {
