@@ -79,8 +79,22 @@ Future<void> addReview({String restaurantId, Review review}) {
 }
 
 Stream<QuerySnapshot> loadFilteredRestaurants(Filter filter) {
-  // TODO: Complete the "Sorting and filtering data" step.
-  return Stream<QuerySnapshot>.value(null);
+  Query collection = FirebaseFirestore.instance.collection('restaurants');
+  if (filter.category != null) {
+    collection = collection.where('category', isEqualTo: filter.category);
+  }
+  if (filter.city != null) {
+    collection = collection.where('city', isEqualTo: filter.city);
+  }
+  if (filter.price != null) {
+    collection = collection.where('price', isEqualTo: filter.price);
+  }
+  return collection
+      // build a compound query based on user input
+      //only returns restaurants that match the user's requirements.
+      .orderBy(filter.sort ?? 'avgRating', descending: true)
+      .limit(50)
+      .snapshots();
 }
 
 void addRestaurantsBatch(List<Restaurant> restaurants) {
